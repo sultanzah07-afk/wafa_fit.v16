@@ -1,32 +1,25 @@
 {
-  "id": "./index.html",
+  "id": "./",
   "name": "WAFA FIT | وفاء فيت",
   "short_name": "WAFA FIT",
-  "lang": "ar",
-  "dir": "rtl",
-  "start_url": "./index.html",
+  "description": "متابعة التغذية والنشاط",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#090811",
-  "theme_color": "#090811",
+  "background_color": "#171124",
+  "theme_color": "#171124",
   "icons": [
     {
-      "src": "./icons/icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

@@ -1,1037 +1,256 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Wafa Fit">
-<meta name="theme-color" content="#090811">
-<link rel="manifest" href="./manifest.webmanifest?v=20261112-clean-v1">
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#171124"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="WAFA FIT"><meta name="mobile-web-app-capable" content="yes"><title>WAFA FIT | وفاء فيت</title><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="icon" href="icons/icon-192.png"><link rel="stylesheet" href="styles.css"><style id="home-screen-gate-style">
+html:not(.wafa-installed) body > * { display:none !important; }
+html:not(.wafa-installed) body > #wafa-install-gate { display:flex !important; }
+#wafa-install-gate { position:fixed;inset:0;z-index:2147483647;box-sizing:border-box;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px));background:#171124;color:#fff;align-items:center;justify-content:center;text-align:center;font-family:system-ui,-apple-system,sans-serif;direction:rtl; }
+#wafa-install-gate .gate-content {max-width:390px;line-height:1.9}
+#wafa-install-gate img {width:90px;height:90px;border-radius:22px;object-fit:cover}
+#wafa-install-gate h1 {font-size:23px;margin:14px 0 8px}
+#wafa-install-gate p {font-size:15px;color:#ded7ed}
+</style>
 <script>
 (function(){
-  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-  document.documentElement.classList.add(standalone ? 'wafa-installed' : 'wafa-not-installed');
+  var standalone=window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches ||
+    window.navigator.standalone === true;
+  if(standalone) document.documentElement.classList.add('wafa-installed');
 })();
-</script>
-<title>Wafa Fit | وفاء فيت</title>
-<style>
-
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-
-
-button,input,select,textarea{font-family:inherit}
-button{cursor:pointer}
-
-
-
-.topbar{flex-shrink:0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:#0c0b14ed;backdrop-filter:blur(15px)}
-.brand{display:flex;align-items:center;gap:11px}
-.brand-logo{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-size:19px;background:linear-gradient(145deg,#7140d7,#b18aff);box-shadow:0 5px 20px #8b5cf644;font-weight:1000}
-.brand-name{font-size:15px;font-weight:950;letter-spacing:.3px}
-.brand-sub{font-size:10px;color:var(--muted);margin-top:4px}
-.top-actions{display:flex;gap:7px}
-.top-icon{width:39px;height:39px;border-radius:13px;border:1px solid var(--border);background:var(--surface);color:white;font-size:17px}
-
-
-
-
-.page{display:none;animation:appear .2s ease}
-.page.active{display:block}
-@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.welcome{padding:20px 2px 16px}
-.welcome h1{font-size:24px;margin:0 0 7px;font-weight:950;letter-spacing:-.4px}
-.welcome p{color:var(--muted);font-size:12px;line-height:1.9;margin:0}
-.date-chip{display:inline-flex;align-items:center;gap:6px;background:#211b35;border:1px solid #3c3157;color:#d4c3ff;padding:7px 11px;border-radius:30px;font-size:10px;font-weight:800;margin-top:12px}
-
-.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#382064,#6637b3 55%,#9565ff);padding:20px;border-radius:24px;margin-bottom:13px;box-shadow:0 12px 30px #6d28d933}
-.hero:after{content:"";position:absolute;width:170px;height:170px;border:1px solid #ffffff18;border-radius:50%;top:-85px;left:-40px;box-shadow:0 0 0 22px #ffffff08,0 0 0 45px #ffffff05}
-.hero-label{font-size:12px;color:#eee5ff;font-weight:700}
-.hero-calories{font-size:38px;font-weight:1000;margin:9px 0 2px;position:relative;z-index:1}
-.hero-calories small{font-size:12px;font-weight:700}
-.hero-target{font-size:10px;color:#e6d9ff}
-.progress-track{height:8px;background:#ffffff38;border-radius:20px;overflow:hidden;margin:14px 0 8px}
-.progress-fill{height:100%;width:0;background:white;border-radius:20px;transition:width .35s}
-.hero-bottom{display:flex;justify-content:space-between;gap:8px;font-size:10px;color:#eee5ff}
-.limit-alert{display:none;background:#481d2b;border:1px solid #a74760;color:#ffe1e8;padding:12px;border-radius:14px;margin-top:13px;font-size:11px;line-height:1.8;position:relative;z-index:1}
-.limit-alert strong{display:block;font-size:13px;margin-bottom:3px}
-
-.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.metric-card{background:linear-gradient(145deg,#1b1929,#12111b);border:1px solid var(--border);border-radius:19px;padding:14px;min-width:0;position:relative;overflow:hidden}
-.metric-icon{width:35px;height:35px;display:grid;place-items:center;font-size:18px;border-radius:12px;background:#302449;margin-bottom:10px}
-.metric-title{color:var(--muted);font-size:10px;font-weight:800}
-.metric-value{font-size:21px;font-weight:950;margin-top:5px;overflow-wrap:anywhere}
-.metric-value small{color:var(--muted);font-size:10px}
-.section-heading{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}
-.section-heading h2{font-size:15px;font-weight:950;margin:0}
-.section-heading span{color:var(--purple2);font-size:11px;font-weight:850;cursor:pointer}
-
-.card{background:linear-gradient(145deg,#1a1927,#12111a);border:1px solid var(--border);border-radius:20px;padding:15px;margin-bottom:13px}
-.input-group{margin-bottom:13px}
-.input-group label{display:block;font-size:12px;font-weight:850;margin-bottom:7px;color:#eee}
-input,select,textarea{width:100%;border:1px solid var(--border);background:#0e0d16;color:white;border-radius:13px;padding:13px;font-size:14px;outline:none;appearance:none}
-input:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px #9565ff18}
-/* إصلاح مربع حفظ الوجبة دون التأثير على بقية الحقول */
-input[type="checkbox"]{
- width:18px!important;height:18px!important;min-width:18px;
- padding:0!important;margin:0;appearance:auto!important;
- -webkit-appearance:checkbox!important;accent-color:var(--purple);
- flex:0 0 18px;cursor:pointer;
-}
-input::placeholder,textarea::placeholder{color:#777386}
-select option{background:#141321;color:white}
-.primary-btn{border:0;background:linear-gradient(135deg,#7544d5,#a477ff);color:white;padding:14px;border-radius:14px;width:100%;font-size:13px;font-weight:950;box-shadow:0 5px 17px #6d28d933}
-.secondary-btn{border:1px solid var(--border);background:#242134;color:#d0bfff;padding:12px;border-radius:13px;width:100%;font-size:12px;font-weight:850}
-.danger-btn{border:1px solid #62303d;background:#351b25;color:#fb7185;padding:12px;border-radius:13px;width:100%;font-size:12px;font-weight:850}
-
-.food-list{display:flex;flex-direction:column;gap:9px}
-.food-item{display:flex;align-items:center;gap:10px;background:#171622;border:1px solid var(--border);border-radius:16px;padding:11px;min-width:0}
-.food-emoji{width:41px;height:41px;border-radius:13px;background:#302449;display:grid;place-items:center;font-size:21px;flex-shrink:0}
-.food-details{flex:1;min-width:0}
-.food-details strong{display:block;font-size:12px;overflow-wrap:anywhere}
-.food-details span{display:block;font-size:10px;color:var(--muted);margin-top:5px}
-.food-calories{font-size:11px;font-weight:950;white-space:nowrap}
-.delete-btn{background:#3a202b;color:#fb7185;border:0;width:28px;height:28px;border-radius:9px;flex-shrink:0}
-
-.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}
-.macro-box{background:#100f18;border:1px solid var(--border);border-radius:13px;padding:10px 5px;text-align:center;min-width:0}
-.macro-box span{display:block;font-size:9px;color:var(--muted);margin-bottom:5px}
-.macro-box strong{font-size:13px;font-weight:950}
-.macro-box.carbs strong{color:var(--orange)}
-.macro-box.protein strong{color:var(--green)}
-.macro-box.fat strong{color:var(--blue)}
-.macro-box.cal strong{color:var(--purple2)}
-
-.water-card{display:flex;align-items:center;gap:13px}
-.water-emoji{font-size:34px}
-.water-info{flex:1;min-width:0}
-.water-info h3{font-size:14px;margin:0 0 5px}
-.water-info p{font-size:11px;color:var(--muted);margin:0}
-.water-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.water-actions button{border:1px solid #44365e;background:#29213d;color:#d0bfff;border-radius:10px;padding:9px 10px;font-size:11px;font-weight:900}
-.mini-track{height:6px;background:#302b3c;border-radius:10px;overflow:hidden;margin-top:9px}
-.mini-fill{height:100%;width:0;background:linear-gradient(90deg,#5c9dff,#a78bfa);border-radius:10px}
-
-.activity-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid var(--border)}
-.activity-row:last-child{border:0}
-.activity-left{display:flex;align-items:center;gap:9px;min-width:0}
-.activity-icon{width:38px;height:38px;background:#302449;border-radius:12px;display:grid;place-items:center;font-size:19px;flex-shrink:0}
-.activity-left strong{display:block;font-size:12px}
-.activity-left small{display:block;font-size:10px;color:var(--muted);margin-top:4px}
-.activity-cal{color:var(--green);font-size:11px;font-weight:900;white-space:nowrap}
-
-.macro-progress-card{background:#171622;border:1px solid var(--border);padding:14px;border-radius:18px;margin-bottom:10px}
-.macro-progress-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:9px}
-.macro-progress-head strong{font-size:12px}
-.macro-progress-head span{color:var(--muted);font-size:10px}
-.macro-track{height:7px;background:#302b3c;border-radius:20px;overflow:hidden}
-.macro-fill{height:100%;width:0;border-radius:20px;transition:width .3s}
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:15px;margin-bottom:14px}
-.chart-bars{display:flex;align-items:flex-end;justify-content:space-around;height:145px;gap:10px;padding-top:15px}
-.bar-column{flex:1;display:flex;align-items:center;flex-direction:column;height:100%;justify-content:flex-end;gap:6px}
-.bar{width:100%;max-width:30px;background:linear-gradient(180deg,#b49aff,#7040cf);border-radius:9px 9px 3px 3px;min-height:4px}
-.bar-label{font-size:9px;color:var(--muted)}
-.bar-value{font-size:10px;font-weight:900;color:#c4b5fd}
-
-.ai-box{background:linear-gradient(135deg,#241a38,#171522);border:1px solid #44315f;border-radius:20px;padding:16px;margin-bottom:14px}
-.ai-title{font-weight:950;font-size:14px;margin-bottom:11px}
-.ai-response{background:#100f18;border:1px solid var(--border);padding:13px;border-radius:14px;font-size:12px;line-height:1.9;color:#ddd6fe;margin-top:12px;display:none}
-.empty-state{text-align:center;padding:23px 10px;color:var(--muted);font-size:12px;line-height:1.9}
-.empty-state div{font-size:32px;margin-bottom:7px}
-.history-item{background:#171622;border:1px solid var(--border);padding:13px;border-radius:15px;margin-bottom:9px;font-size:12px;line-height:1.9}
-.history-item strong{color:#c4b5fd}
-.saved-meal-card{background:linear-gradient(145deg,#201b30,#15131f);border:1px solid #3b3153;border-radius:17px;padding:13px;margin-bottom:9px}
-.saved-meal-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.saved-meal-top strong{font-size:13px}
-.saved-meal-top span{font-size:10px;color:#c4b5fd}
-.saved-meal-actions{display:flex;gap:7px;margin-top:11px}
-.saved-meal-actions button{flex:1}
-.saved-meal-type{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:11px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
-.saved-meal-type select{max-width:58%;padding:9px 11px;border-radius:10px;background:#100f18;color:var(--text);border:1px solid var(--border);font:inherit}
-
-
-
-
-
-.creator{text-align:center;color:#777386;font-size:10px;font-weight:850;padding:18px 0 9px}
-.toast{position:fixed;bottom:calc(85px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#272333;border:1px solid #51406c;color:white;padding:12px 17px;border-radius:14px;font-size:12px;font-weight:850;z-index:3000;display:none;max-width:90%;white-space:normal;text-align:center;box-shadow:0 6px 20px #0008}
-
-#onboarding{position:fixed;inset:0;z-index:2000;background:radial-gradient(ellipse at top,#2b1949 0%,#100e19 50%,#090811 100%);display:none;overflow-y:auto;padding:calc(20px + env(safe-area-inset-top)) 18px calc(25px + env(safe-area-inset-bottom))}
-.onboard-inner{max-width:440px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
-.onboard-top{text-align:center;margin-bottom:19px}
-.onboard-logo{width:76px;height:76px;border-radius:25px;background:linear-gradient(135deg,#7140d7,#b18aff);display:grid;place-items:center;font-size:30px;font-weight:1000;margin:0 auto 15px;box-shadow:0 10px 40px #8b5cf655}
-.onboard-kicker{color:#c4b5fd;font-size:10px;font-weight:950;letter-spacing:2px}
-.onboard-title{text-align:center;font-size:25px;font-weight:950;margin:9px 0}
-.onboard-sub{text-align:center;color:var(--muted);font-size:12px;line-height:2;margin:0 auto;max-width:320px}
-.onboard-card{background:linear-gradient(145deg,#1c1a29,#111019);border:1px solid #393149;border-radius:25px;padding:18px;box-shadow:0 18px 50px #0007}
-.step-line{display:flex;align-items:center;gap:8px;margin-bottom:18px}
-.step-dot{height:5px;flex:1;border-radius:9px;background:#34313e}
-.step-dot.active{background:linear-gradient(90deg,#6d28d9,#a78bfa)}
-.step-caption{font-size:10px;color:#c4b5fd;font-weight:900;margin-bottom:8px}
-.onboard-section-title{font-size:17px;font-weight:950;margin:0 0 7px}
-.onboard-section-sub{font-size:11px;color:var(--muted);line-height:1.8;margin:0 0 15px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.form-grid .input-group{min-width:0}
-.onboard-card .input-group label{font-size:11px;color:#ded9eb}
-.onboard-card input,.onboard-card select{background:#0d0c15;border-color:#343044;padding:12px}
-.goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.goal-input{background:#13111d;border:1px solid #393149;border-radius:14px;padding:10px;min-width:0}
-.goal-input label{display:block;font-size:10px;color:#d7c9f6;font-weight:850;margin-bottom:7px}
-.goal-input input{font-size:15px;font-weight:900;padding:10px;border-radius:10px}
-.goal-input.full{grid-column:1/-1}
-.onboard-note{color:var(--muted);font-size:10px;line-height:1.9;margin:12px 0}
-.onboard-actions{display:flex;gap:9px;margin-top:13px}
-.onboard-actions button{flex:1}
-.onboard-error{color:#ff8ba0;font-size:11px;line-height:1.8;margin-top:10px;display:none}
-.settings-hero{background:linear-gradient(135deg,#281943,#3d2861);border:1px solid #49356b;border-radius:20px;padding:16px;margin-bottom:14px}
-.settings-hero strong{font-size:14px}
-.settings-hero p{font-size:11px;color:#d2c5ee;line-height:1.8;margin:7px 0 0}
-.goal-setting{background:#11101a;border:1px solid var(--border);border-radius:15px;padding:12px;margin-bottom:10px}
-.goal-setting label{display:block;font-size:11px;font-weight:850;margin-bottom:7px}
-.goal-setting input{font-size:16px;font-weight:900}
-
-
-
-/* لا تظهر المنصة إلا عند تشغيلها من أيقونة الشاشة الرئيسية */
-
-
-html.wafa-installed #installGate{display:none!important}
-#installGate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at top,#2b1949 0%,#100e19 55%,#090811 100%);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;text-align:center}
-.install-card{width:100%;max-width:420px;background:linear-gradient(145deg,#1c1a29,#111019);border:1px solid #49356b;border-radius:26px;padding:25px 20px;box-shadow:0 18px 55px #0008}
-.install-logo{width:82px;height:82px;object-fit:cover;border-radius:23px;margin:0 auto 16px;display:block}
-.install-card h1{font-size:23px;margin:0 0 9px;font-weight:950}
-.install-card p{font-size:13px;line-height:2;color:#c9c2d8;margin:8px 0}
-.install-steps{background:#100f18;border:1px solid #393149;border-radius:16px;padding:14px;margin:17px 0;text-align:right;font-size:13px;line-height:2.2}
-.install-hint{color:#c4b5fd!important;font-size:11px!important}
-
-
-/* WAFA FIT R10 — single layout authority. Previous R8/R9 overrides removed. */
-
-
-
-
-
-
-
-
-
-
-
-
-/* Keyboard changes should resize content, not leave the navigation floating. */
-
-
-/* WAFA FIT — CLEAN MOBILE APP SHELL (single source of layout rules) */
-:root{--bg:#090811;--surface:#141321;--surface2:#1c1a2b;--surface3:#252238;--purple:#9565ff;--purple2:#b49aff;--white:#fff;--muted:#a09bb2;--border:#302c43;--green:#55d6a1;--red:#ff718d;--blue:#72b9ff;--orange:#ffbb70;color-scheme:dark}
-html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#100f18;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-html{overscroll-behavior:none}
-body{position:fixed;inset:0;overscroll-behavior:none}
-#app{position:fixed;inset:0;width:100%;max-width:430px;margin:0 auto;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;background:radial-gradient(ellipse at 90% -10%,#6f42bd28,transparent 42%),var(--bg);padding:env(safe-area-inset-top,0px) 0 0;box-sizing:border-box}
-#app>.topbar{grid-row:1;min-height:0;flex-shrink:0}
-#app>main.content{grid-row:2;min-height:0;min-width:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;padding:0 15px 18px;scrollbar-width:none}
-#app>main.content::-webkit-scrollbar{display:none}
-#app>nav.bottom-nav{grid-row:3;position:relative;inset:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;justify-items:stretch;flex:none;width:100%;height:auto;min-height:0;margin:0;padding:6px max(3px,env(safe-area-inset-right,0px)) max(8px,env(safe-area-inset-bottom,0px)) max(3px,env(safe-area-inset-left,0px));background:#100f18;border-top:1px solid var(--border);box-shadow:none;transform:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-sizing:border-box}
-#app>nav.bottom-nav>.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:55px;width:100%;height:auto;margin:0;padding:5px 1px;border:0;border-radius:12px;background:transparent;color:#88839a;font-size:clamp(9px,2.7vw,12px);font-weight:850;line-height:1.25;white-space:nowrap;overflow:visible}
-#app>nav.bottom-nav>.nav-item.active{color:#d2c0ff;background:#2a2140}
-#app>nav.bottom-nav .nav-icon{display:flex;align-items:center;justify-content:center;width:23px;height:23px;flex:0 0 23px;font-size:0}
-#app>nav.bottom-nav .nav-icon svg{display:block;width:23px;height:23px;fill:none;stroke:currentColor}
-#app>nav.bottom-nav>.nav-item>span:last-child{display:block;width:100%;text-align:center;line-height:1.25}
-html.wafa-not-installed #app{display:none}
-html.wafa-installed #app{display:grid}
-html.wafa-installed #installGate{display:none}
-@media(min-width:600px){body{background:#242230}#app{border-inline:1px solid var(--border)}}
-@media(max-width:350px){#app>nav.bottom-nav>.nav-item{font-size:9px}}
-
-</style>
-
-
-
-<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-<link rel="apple-touch-icon-precomposed" sizes="180x180" href="./apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
-</head>
-
-<body>
-<div id="installGate" role="dialog" aria-modal="true" aria-labelledby="installTitle">
- <div class="install-card" style="max-height: 90vh; overflow-y: auto;">
-  <img class="install-logo" src="logo.png" alt="WAFA FIT">
-  <h1 id="installTitle">WAFA FIT | وفاء فيت</h1>
-  <p>لاستخدام المنصة، أضفها إلى الشاشة الرئيسية وافتحها من الأيقونة مثل التطبيقات.</p>
-  <div class="install-steps" style="text-align: right; font-size: 12px; line-height: 1.8;">
-   <strong style="font-size: 13px; color: #c4b5fd;">طريقة التثبيت على iPhone:</strong><br><br>
-   
-   <div style="margin-bottom: 15px;">
-    <strong>١. اضغط زر المشاركة أسفل Safari:</strong><br>
-    <img src="step1.png" alt="خطوة 1" style="width: 100%; max-width: 220px; height: auto; border-radius: 10px; margin: 6px auto; display: block; border: 1px solid #393149;">
-   </div>
-
-   <div style="margin-bottom: 15px;">
-    <strong>٢. اختر "إضافة إلى الصفحة الرئيسية":</strong><br>
-    <img src="step2.png" alt="خطوة 2" style="width: 100%; max-width: 220px; height: auto; border-radius: 10px; margin: 6px auto; display: block; border: 1px solid #393149;">
-   </div>
-
-   <div style="margin-bottom: 5px;">
-    <strong>٣. اضغط "إضافة" أعلى الشاشة:</strong><br>
-    <img src="step3.png" alt="خطوة 3" style="width: 100%; max-width: 220px; height: auto; border-radius: 10px; margin: 6px auto; display: block; border: 1px solid #393149;">
-   </div>
+</script></head><body><div id="wafa-install-gate" role="main" aria-label="تعليمات تثبيت WAFA FIT">
+  <div class="gate-content">
+    <img src="./apple-touch-icon.png" alt="WAFA FIT">
+    <h1>ثبّت WAFA FIT أولًا 💜</h1>
+    <p>للدخول إلى التطبيق، افتح الرابط في Safari على الآيفون، واضغط مشاركة ثم «إضافة إلى الشاشة الرئيسية»، وبعدها افتح WAFA FIT من أيقونته.</p>
+    <p>على أندرويد: افتح الرابط في Chrome ثم اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية» من القائمة.</p>
   </div>
-
-  <p class="install-hint">إذا لم يظهر خيار «إضافة إلى الشاشة الرئيسية»، تأكد أنك تفتح الرابط من Safari وليس من متصفح داخل تطبيق آخر.</p>
- </div>
+</div><div aria-labelledby="installTitle" aria-modal="true" id="installGate" role="dialog">
+<div class="install-card" style="max-height: 90vh; overflow-y: auto;">
+<img alt="WAFA FIT" class="install-logo" src="logo.png"/>
+<h1 id="installTitle">WAFA FIT | وفاء فيت</h1>
+<p>لاستخدام المنصة، أضفها إلى الشاشة الرئيسية وافتحها من الأيقونة مثل التطبيقات.</p>
+<div class="install-steps" style="text-align: right; font-size: 12px; line-height: 1.8;">
+<strong style="font-size: 13px; color: #c4b5fd;">طريقة التثبيت على iPhone:</strong><br/><br/>
+<div style="margin-bottom: 15px;">
+<strong>١. اضغط زر المشاركة أسفل Safari:</strong><br/>
+<img alt="خطوة 1" src="step1.png" style="width: 100%; max-width: 220px; height: auto; border-radius: 10px; margin: 6px auto; display: block; border: 1px solid #393149;"/>
 </div>
-
-<div id="app">
+<div style="margin-bottom: 15px;">
+<strong>٢. اختر "إضافة إلى الصفحة الرئيسية":</strong><br/>
+<img alt="خطوة 2" src="step2.png" style="width: 100%; max-width: 220px; height: auto; border-radius: 10px; margin: 6px auto; display: block; border: 1px solid #393149;"/>
+</div>
+<div style="margin-bottom: 5px;">
+<strong>٣. اضغط "إضافة" أعلى الشاشة:</strong><br/>
+<img alt="خطوة 3" src="step3.png" style="width: 100%; max-width: 220px; height: auto; border-radius: 10px; margin: 6px auto; display: block; border: 1px solid #393149;"/>
+</div>
+</div>
+<p class="install-hint">إذا لم يظهر خيار «إضافة إلى الشاشة الرئيسية»، تأكد أنك تفتح الرابط من Safari وليس من متصفح داخل تطبيق آخر.</p>
+</div>
+</div><div id="app">
 <header class="topbar">
- <div class="brand">
-  <div class="brand-logo">WF</div>
-  <div><div class="brand-name">WAFA FIT | وفاء فيت</div><div class="brand-sub">صحتك · نشاطك · تقدمك</div></div>
- </div>
- <div class="top-actions"><button class="top-icon" onclick="switchPage('settings')" aria-label="الإعدادات">⚙️</button></div>
+<div class="brand">
+<div class="brand-logo">WF</div>
+<div><div class="brand-name">WAFA FIT | وفاء فيت</div><div class="brand-sub">صحتك · نشاطك · تقدمك</div></div>
+</div>
+<div class="top-actions"><button aria-label="الإعدادات" class="top-icon" onclick="switchPage('settings')">⚙️</button></div>
 </header>
 <main class="content">
-
 <section class="page active" id="home">
- <div class="welcome">
-  <h1 id="welcomeName">أهلًا بك 💜</h1>
-  <p>كل يوم فرصة جديدة للاهتمام بصحتك.</p>
-  <div class="date-chip">📅 <span id="dailyDate"></span></div>
- </div>
- <div class="hero">
-  <div class="hero-label">إجمالي السعرات المسجلة</div>
-  <div class="hero-calories"><span id="homeCalories">0</span> <small>سعرة</small></div>
-  <div class="hero-target" id="calorieTargetText">من هدفك اليومي</div>
-  <div class="progress-track"><div class="progress-fill" id="calorieProgress"></div></div>
-  <div class="hero-bottom"><span id="calorieRemaining">المتبقي: 0</span><span id="caloriePercent">0%</span></div>
-  <div class="limit-alert" id="limitAlert"><strong>⚠️ تجاوزت هدف السعرات اليومي</strong><span id="limitAlertText"></span></div>
- </div>
- <div class="section-heading"><h2>ملخص التغذية</h2><span onclick="switchPage('stats')">التفاصيل</span></div>
- <div class="grid-two">
-  <div class="metric-card"><div class="metric-icon">🍞</div><div class="metric-title">الكربوهيدرات</div><div class="metric-value"><span id="homeCarbs">0</span><small> جم</small></div></div>
-  <div class="metric-card"><div class="metric-icon">🥩</div><div class="metric-title">البروتين</div><div class="metric-value"><span id="homeProtein">0</span><small> جم</small></div></div>
-  <div class="metric-card"><div class="metric-icon">🥑</div><div class="metric-title">الدهون</div><div class="metric-value"><span id="homeFat">0</span><small> جم</small></div></div>
-  <div class="metric-card"><div class="metric-icon">💧</div><div class="metric-title">الماء اليوم</div><div class="metric-value"><span id="homeWater">0</span><small> مل</small></div></div>
- </div>
- <div class="section-heading"><h2>تقدم الماكروز</h2><span>اليوم</span></div>
- <div id="macroProgress"></div>
- <div class="section-heading"><h2>شرب الماء 💧</h2><span id="waterGoalText"></span></div>
- <div class="card water-card">
-  <div class="water-emoji">🥤</div>
-  <div class="water-info">
-   <h3><span id="waterProgressText">0</span> مل</h3>
-   <p>من هدف الماء اليومي</p>
-   <div class="mini-track"><div class="mini-fill" id="waterProgress"></div></div>
-   <div class="water-actions"><button onclick="addWater(250)">+250 مل</button><button onclick="addWater(500)">+500 مل</button><button onclick="removeWater(250)">−250 مل</button></div>
-  </div>
- </div>
- <div class="section-heading"><h2>آخر الوجبات 🍽️</h2><span onclick="switchPage('foods')">عرض الكل</span></div>
- <div id="homeFoodList" class="food-list"></div>
- <div class="section-heading"><h2>النشاط الرياضي</h2><span onclick="switchPage('exercise')">إضافة نشاط</span></div>
- <div class="grid-two">
-  <div class="metric-card"><div class="metric-icon">🏃</div><div class="metric-title">عدد الأنشطة</div><div class="metric-value" id="homeExerciseCount">0</div></div>
-  <div class="metric-card"><div class="metric-icon">🔥</div><div class="metric-title">الحرق التقديري</div><div class="metric-value"><span id="homeExercise">0</span><small> سعرة</small></div></div>
- </div>
- <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+<div class="welcome">
+<h1 id="welcomeName">أهلًا بك 💜</h1>
+<p>كل يوم فرصة جديدة للاهتمام بصحتك.</p>
+<div class="date-chip">📅 <span id="dailyDate"></span></div>
+</div>
+<div class="hero">
+<div class="hero-label">إجمالي السعرات المسجلة</div>
+<div class="hero-calories"><span id="homeCalories">0</span> <small>سعرة</small></div>
+<div class="hero-target" id="calorieTargetText">من هدفك اليومي</div>
+<div class="progress-track"><div class="progress-fill" id="calorieProgress"></div></div>
+<div class="hero-bottom"><span id="calorieRemaining">المتبقي: 0</span><span id="caloriePercent">0%</span></div>
+<div class="limit-alert" id="limitAlert"><strong>⚠️ تجاوزت هدف السعرات اليومي</strong><span id="limitAlertText"></span></div>
+</div>
+<div class="section-heading"><h2>ملخص التغذية</h2><span onclick="switchPage('stats')">التفاصيل</span></div>
+<div class="grid-two">
+<div class="metric-card"><div class="metric-icon">🍞</div><div class="metric-title">الكربوهيدرات</div><div class="metric-value"><span id="homeCarbs">0</span><small> جم</small></div></div>
+<div class="metric-card"><div class="metric-icon">🥩</div><div class="metric-title">البروتين</div><div class="metric-value"><span id="homeProtein">0</span><small> جم</small></div></div>
+<div class="metric-card"><div class="metric-icon">🥑</div><div class="metric-title">الدهون</div><div class="metric-value"><span id="homeFat">0</span><small> جم</small></div></div>
+<div class="metric-card"><div class="metric-icon">💧</div><div class="metric-title">الماء اليوم</div><div class="metric-value"><span id="homeWater">0</span><small> مل</small></div></div>
+</div>
+<div class="section-heading"><h2>تقدم الماكروز</h2><span>اليوم</span></div>
+<div id="macroProgress"></div>
+<div class="section-heading"><h2>شرب الماء 💧</h2><span id="waterGoalText"></span></div>
+<div class="card water-card">
+<div class="water-emoji">🥤</div>
+<div class="water-info">
+<h3><span id="waterProgressText">0</span> مل</h3>
+<p>من هدف الماء اليومي</p>
+<div class="mini-track"><div class="mini-fill" id="waterProgress"></div></div>
+<div class="water-actions"><button onclick="addWater(250)">+250 مل</button><button onclick="addWater(500)">+500 مل</button><button onclick="removeWater(250)">−250 مل</button></div>
+</div>
+</div>
+<div class="section-heading"><h2>آخر الوجبات 🍽️</h2><span onclick="switchPage('foods')">عرض الكل</span></div>
+<div class="food-list" id="homeFoodList"></div>
+<div class="section-heading"><h2>النشاط الرياضي</h2><span onclick="switchPage('exercise')">إضافة نشاط</span></div>
+<div class="grid-two">
+<div class="metric-card"><div class="metric-icon">🏃</div><div class="metric-title">عدد الأنشطة</div><div class="metric-value" id="homeExerciseCount">0</div></div>
+<div class="metric-card"><div class="metric-icon">🔥</div><div class="metric-title">الحرق التقديري</div><div class="metric-value"><span id="homeExercise">0</span><small> سعرة</small></div></div>
+</div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
 </section>
-
 <section class="page" id="foods">
- <div class="welcome"><h1>سجل الغذاء 🍎</h1><p>سجل وجباتك ومعلوماتها الغذائية بالتفصيل.</p></div>
- <div class="card">
-  <div class="input-group"><label>اسم الطعام أو الوجبة</label><input id="foodName" placeholder="مثال: شوفان بالحليب والموز"></div>
-  <div class="input-group"><label>السعرات الحرارية</label><input id="foodCalories" type="number" min="0" placeholder="مثال: 350"></div>
-  <div class="form-grid">
-   <div class="input-group"><label>الكربوهيدرات (جم)</label><input id="foodCarbs" type="number" min="0" placeholder="45"></div>
-   <div class="input-group"><label>البروتين (جم)</label><input id="foodProtein" type="number" min="0" placeholder="20"></div>
-   <div class="input-group"><label>الدهون (جم)</label><input id="foodFat" type="number" min="0" placeholder="12"></div>
-   <div class="input-group"><label>نوع الوجبة</label><select id="foodMeal"><option>الفطور</option><option>الغداء</option><option>العشاء</option><option>وجبة خفيفة</option></select></div>
-  </div>
-  <label style="display:flex;align-items:center;gap:9px;font-size:11px;color:#d5c6f8;margin:5px 0 14px">
-   <input id="saveFoodToLibrary" type="checkbox" style="width:18px;height:18px;accent-color:#9565ff">
+<div class="welcome"><h1>سجل الغذاء 🍎</h1><p>سجل وجباتك ومعلوماتها الغذائية بالتفصيل.</p></div>
+<div class="card">
+<div class="input-group"><label>اسم الطعام أو الوجبة</label><input id="foodName" placeholder="مثال: شوفان بالحليب والموز"/></div>
+<div class="input-group"><label>السعرات الحرارية</label><input id="foodCalories" min="0" placeholder="مثال: 350" type="number"/></div>
+<div class="form-grid">
+<div class="input-group"><label>الكربوهيدرات (جم)</label><input id="foodCarbs" min="0" placeholder="45" type="number"/></div>
+<div class="input-group"><label>البروتين (جم)</label><input id="foodProtein" min="0" placeholder="20" type="number"/></div>
+<div class="input-group"><label>الدهون (جم)</label><input id="foodFat" min="0" placeholder="12" type="number"/></div>
+<div class="input-group"><label>نوع الوجبة</label><select id="foodMeal"><option>الفطور</option><option>الغداء</option><option>العشاء</option><option>وجبة خفيفة</option></select></div>
+</div>
+<label style="display:flex;align-items:center;gap:9px;font-size:11px;color:#d5c6f8;margin:5px 0 14px">
+<input id="saveFoodToLibrary" style="width:18px;height:18px;accent-color:#9565ff" type="checkbox"/>
    احفظ هذه الوجبة في سجل وجباتي الدائم
   </label>
-  <button class="primary-btn" onclick="addFood()">+ تسجيل الوجبة</button>
- </div>
- <div class="section-heading"><h2>وجبات اليوم</h2><span id="foodTotalLabel">0</span></div>
- <div id="foodList" class="food-list"></div>
- <div class="section-heading"><h2>📚 سجل وجباتي المحفوظة</h2><span id="savedCount">0 وجبة</span></div>
- <p style="font-size:11px;color:var(--muted);line-height:1.8;margin:0 2px 12px">هذه الوجبات محفوظة في جهازك ولا تختفي مع بداية يوم جديد. يمكنك إضافتها إلى سجل اليوم متى أردت.</p>
- <div id="savedMealsList"></div>
- <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+<button class="primary-btn" onclick="addFood()">+ تسجيل الوجبة</button>
+</div>
+<div class="section-heading"><h2>وجبات اليوم</h2><span id="foodTotalLabel">0</span></div>
+<div class="food-list" id="foodList"></div>
+<div class="section-heading"><h2>📚 سجل وجباتي المحفوظة</h2><span id="savedCount">0 وجبة</span></div>
+<p style="font-size:11px;color:var(--muted);line-height:1.8;margin:0 2px 12px">هذه الوجبات محفوظة في جهازك ولا تختفي مع بداية يوم جديد. يمكنك إضافتها إلى سجل اليوم متى أردت.</p>
+<div id="savedMealsList"></div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
 </section>
-
 <section class="page" id="exercise">
- <div class="welcome"><h1>النشاط الرياضي 🏃</h1><p>سجل نشاطك واحصل على تقدير تقريبي للسعرات المحروقة.</p></div>
- <div class="settings-hero" id="exerciseProfile"></div>
- <div class="card">
-  <div class="input-group"><label>نوع الرياضة</label>
-   <select id="exerciseType">
-    <option value="3.3">المشي الهادئ — شدة خفيفة</option>
-    <option value="4.3">المشي السريع — شدة متوسطة</option>
-    <option value="6.8">ركوب الدراجة — شدة متوسطة إلى عالية</option>
-    <option value="6">السباحة — شدة متوسطة</option>
-    <option value="5">الرقص — شدة متوسطة</option>
-    <option value="3.5">تمارين خفيفة — شدة خفيفة</option>
-    <option value="8.3">الجري — شدة عالية</option>
-    <option value="10">نط الحبل — شدة عالية</option>
-    <option value="7">تمارين هوائية — شدة عالية</option>
-    <option value="4">تمارين مقاومة — شدة متوسطة</option>
-   </select>
-  </div>
-  <div class="input-group"><label>مدة التمرين بالدقائق</label><input id="exerciseMinutes" type="number" min="1" max="600" placeholder="مثال: 30"></div>
-  <button class="primary-btn" onclick="previewBurn()">احسب الحرق التقديري</button>
-  <div class="ai-response" id="burnPreview"></div>
-  <div style="height:10px"></div>
-  <button class="secondary-btn" onclick="addExercise()">تأكيد وإضافة إلى سجل النشاط</button>
- </div>
- <div class="section-heading"><h2>أنشطتك اليوم</h2></div>
- <div class="card" id="exerciseList"></div>
- <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+<div class="welcome"><h1>النشاط الرياضي 🏃</h1><p>سجل نشاطك واحصل على تقدير تقريبي للسعرات المحروقة.</p></div>
+<div class="settings-hero" id="exerciseProfile"></div>
+<div class="card">
+<div class="input-group"><label>نوع الرياضة</label>
+<select id="exerciseType">
+<option value="3.3">المشي الهادئ — شدة خفيفة</option>
+<option value="4.3">المشي السريع — شدة متوسطة</option>
+<option value="6.8">ركوب الدراجة — شدة متوسطة إلى عالية</option>
+<option value="6">السباحة — شدة متوسطة</option>
+<option value="5">الرقص — شدة متوسطة</option>
+<option value="3.5">تمارين خفيفة — شدة خفيفة</option>
+<option value="8.3">الجري — شدة عالية</option>
+<option value="10">نط الحبل — شدة عالية</option>
+<option value="7">تمارين هوائية — شدة عالية</option>
+<option value="4">تمارين مقاومة — شدة متوسطة</option>
+</select>
+</div>
+<div class="input-group"><label>مدة التمرين بالدقائق</label><input id="exerciseMinutes" max="600" min="1" placeholder="مثال: 30" type="number"/></div>
+<button class="primary-btn" onclick="previewBurn()">احسب الحرق التقديري</button>
+<div class="ai-response" id="burnPreview"></div>
+<div style="height:10px"></div>
+<button class="secondary-btn" onclick="addExercise()">تأكيد وإضافة إلى سجل النشاط</button>
+</div>
+<div class="section-heading"><h2>أنشطتك اليوم</h2></div>
+<div class="card" id="exerciseList"></div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
 </section>
-
 <section class="page" id="stats">
- <div class="welcome"><h1>الإحصائيات 📊</h1><p>تابع تفاصيل التغذية والنشاط اليومي.</p></div>
- <div class="grid-two">
-  <div class="metric-card"><div class="metric-icon">🍽️</div><div class="metric-title">عدد الوجبات</div><div class="metric-value" id="statsFoods">0</div></div>
-  <div class="metric-card"><div class="metric-icon">💧</div><div class="metric-title">الماء</div><div class="metric-value" id="statsWater">0<small> مل</small></div></div>
-  <div class="metric-card"><div class="metric-icon">🏃</div><div class="metric-title">الأنشطة</div><div class="metric-value" id="statsExercises">0</div></div>
-  <div class="metric-card"><div class="metric-icon">🔥</div><div class="metric-title">حرق النشاط</div><div class="metric-value" id="statsBurn">0</div></div>
- </div>
- <div class="section-heading"><h2>تفاصيل الماكروز</h2></div>
- <div class="card" id="statsMacros"></div>
- <div class="section-heading"><h2>السعرات حسب الوجبة</h2></div>
- <div class="chart-card"><div class="chart-bars" id="mealChart"></div></div>
- <div class="section-heading"><h2>سجل الأيام السابقة 📅</h2></div>
- <div id="historyList"></div>
- <div class="section-heading"><h2>إدارة بياناتك</h2></div>
- <div class="card">
-  <button class="secondary-btn" onclick="exportData()">📥 تصدير بيانات التطبيق</button><div style="height:10px"></div>
-  <button class="danger-btn" onclick="resetAll()">حذف بيانات اليوم والسجل</button>
- </div>
- <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+<div class="welcome"><h1>الإحصائيات 📊</h1><p>تابع تفاصيل التغذية والنشاط اليومي.</p></div>
+<div class="grid-two">
+<div class="metric-card"><div class="metric-icon">🍽️</div><div class="metric-title">عدد الوجبات</div><div class="metric-value" id="statsFoods">0</div></div>
+<div class="metric-card"><div class="metric-icon">💧</div><div class="metric-title">الماء</div><div class="metric-value" id="statsWater">0<small> مل</small></div></div>
+<div class="metric-card"><div class="metric-icon">🏃</div><div class="metric-title">الأنشطة</div><div class="metric-value" id="statsExercises">0</div></div>
+<div class="metric-card"><div class="metric-icon">🔥</div><div class="metric-title">حرق النشاط</div><div class="metric-value" id="statsBurn">0</div></div>
+</div>
+<div class="section-heading"><h2>تفاصيل الماكروز</h2></div>
+<div class="card" id="statsMacros"></div>
+<div class="section-heading"><h2>السعرات حسب الوجبة</h2></div>
+<div class="chart-card"><div class="chart-bars" id="mealChart"></div></div>
+<div class="section-heading"><h2>سجل الأيام السابقة 📅</h2></div>
+<div id="historyList"></div>
+<div class="section-heading"><h2>إدارة بياناتك</h2></div>
+<div class="card">
+<button class="secondary-btn" onclick="exportData()">📥 تصدير بيانات التطبيق</button><div style="height:10px"></div>
+<button class="danger-btn" onclick="resetAll()">حذف بيانات اليوم والسجل</button>
+</div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
 </section>
-
 <section class="page" id="coach">
- <div class="welcome"><h1>المساعد الصحي 💜</h1><p>نصائح عامة حول التغذية والعادات الصحية.</p></div>
- <div class="ai-box">
-  <div class="ai-title">✨ مساعد Wafa Fit</div>
-  <div style="font-size:12px;line-height:1.9;color:#c4b5fd">اكتب سؤالًا حول الغذاء أو الماء أو الرياضة أو النوم.</div>
-  <div class="input-group" style="margin-top:15px"><label>سؤالك</label><textarea id="coachQuestion" rows="3" placeholder="اكتب سؤالك هنا..."></textarea></div>
-  <button class="primary-btn" onclick="askCoach()">إرسال السؤال</button>
-  <div class="ai-response" id="coachResponse"></div>
- </div>
- <div class="section-heading"><h2>أسئلة سريعة</h2></div>
- <div class="card">
-  <button class="secondary-btn" onclick="quickQuestion('ما أهمية شرب الماء؟')">💧 أهمية الماء</button><div style="height:9px"></div>
-  <button class="secondary-btn" onclick="quickQuestion('ما هي الوجبة المتوازنة؟')">🥗 الوجبة المتوازنة</button><div style="height:9px"></div>
-  <button class="secondary-btn" onclick="quickQuestion('كيف أبدأ الحركة بشكل آمن؟')">🚶 الحركة الآمنة</button><div style="height:9px"></div>
-  <button class="secondary-btn" onclick="quickQuestion('كيف أحسن نومي؟')">🌙 النوم الصحي</button>
- </div>
- <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+<div class="welcome"><h1>المساعد الصحي 💜</h1><p>نصائح عامة حول التغذية والعادات الصحية.</p></div>
+<div class="ai-box">
+<div class="ai-title">✨ مساعد Wafa Fit</div>
+<div style="font-size:12px;line-height:1.9;color:#c4b5fd">اكتب سؤالًا حول الغذاء أو الماء أو الرياضة أو النوم.</div>
+<div class="input-group" style="margin-top:15px"><label>سؤالك</label><textarea id="coachQuestion" placeholder="اكتب سؤالك هنا..." rows="3"></textarea></div>
+<button class="primary-btn" onclick="askCoach()">إرسال السؤال</button>
+<div class="ai-response" id="coachResponse"></div>
+</div>
+<div class="section-heading"><h2>أسئلة سريعة</h2></div>
+<div class="card">
+<button class="secondary-btn" onclick="quickQuestion('ما أهمية شرب الماء؟')">💧 أهمية الماء</button><div style="height:9px"></div>
+<button class="secondary-btn" onclick="quickQuestion('ما هي الوجبة المتوازنة؟')">🥗 الوجبة المتوازنة</button><div style="height:9px"></div>
+<button class="secondary-btn" onclick="quickQuestion('كيف أبدأ الحركة بشكل آمن؟')">🚶 الحركة الآمنة</button><div style="height:9px"></div>
+<button class="secondary-btn" onclick="quickQuestion('كيف أحسن نومي؟')">🌙 النوم الصحي</button>
+</div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
 </section>
-
 <section class="page" id="settings">
- <div class="welcome"><h1>الإعدادات ⚙️</h1><p>إدارة أهدافك ومعلوماتك الشخصية.</p></div>
- <div class="settings-hero"><strong>🎯 أهدافك اليومية</strong><p>عدّل احتياجاتك وأهدافك متى شئت. التغييرات تظهر مباشرة في لوحة المتابعة.</p></div>
- <div class="card">
-  <div class="goal-setting"><label>🔥 السعرات الحرارية (سعرة)</label><input id="goalCalories" type="number" min="1" max="15000"></div>
-  <div class="goal-setting"><label>🍞 الكربوهيدرات (جم)</label><input id="goalCarbs" type="number" min="0" max="1500"></div>
-  <div class="goal-setting"><label>🥩 البروتين (جم)</label><input id="goalProtein" type="number" min="0" max="1500"></div>
-  <div class="goal-setting"><label>🥑 الدهون (جم)</label><input id="goalFat" type="number" min="0" max="1500"></div>
-  <div class="goal-setting"><label>💧 الماء (مل)</label><input id="goalWater" type="number" min="1" max="15000"></div>
-  <button class="primary-btn" onclick="saveGoals()">حفظ الأهداف اليومية</button>
- </div>
- <div class="section-heading"><h2>معلومات الملف الشخصي</h2></div>
- <div class="card" id="settingsProfile"></div>
- <button class="secondary-btn" onclick="openProfile()">✏️ تعديل المعلومات الشخصية</button>
- <div class="section-heading"><h2>حول التطبيق</h2></div>
- <div class="card" style="font-size:12px;line-height:2;color:var(--muted)">Wafa Fit | وفاء فيت<br>الإصدار 2.0<br>ابتكار سلطان الزهراني</div>
- <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+<div class="welcome"><h1>الإعدادات ⚙️</h1><p>إدارة أهدافك ومعلوماتك الشخصية.</p></div>
+<div class="settings-hero"><strong>🎯 أهدافك اليومية</strong><p>عدّل احتياجاتك وأهدافك متى شئت. التغييرات تظهر مباشرة في لوحة المتابعة.</p></div>
+<div class="card">
+<div class="goal-setting"><label>🔥 السعرات الحرارية (سعرة)</label><input id="goalCalories" max="15000" min="1" type="number"/></div>
+<div class="goal-setting"><label>🍞 الكربوهيدرات (جم)</label><input id="goalCarbs" max="1500" min="0" type="number"/></div>
+<div class="goal-setting"><label>🥩 البروتين (جم)</label><input id="goalProtein" max="1500" min="0" type="number"/></div>
+<div class="goal-setting"><label>🥑 الدهون (جم)</label><input id="goalFat" max="1500" min="0" type="number"/></div>
+<div class="goal-setting"><label>💧 الماء (مل)</label><input id="goalWater" max="15000" min="1" type="number"/></div>
+<button class="primary-btn" onclick="saveGoals()">حفظ الأهداف اليومية</button>
+</div>
+<div class="section-heading"><h2>معلومات الملف الشخصي</h2></div>
+<div class="card" id="settingsProfile"></div>
+<button class="secondary-btn" onclick="openProfile()">✏️ تعديل المعلومات الشخصية</button>
+<div class="section-heading"><h2>حول التطبيق</h2></div>
+<div class="card" style="font-size:12px;line-height:2;color:var(--muted)">Wafa Fit | وفاء فيت<br/>الإصدار 2.0<br/>ابتكار سلطان الزهراني</div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
 </section>
 </main>
-
 <nav class="bottom-nav">
- <button class="nav-item active" data-page="home" onclick="switchPage('home')"><span class="nav-icon"><svg class="wafa-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg></span><span>الرئيسية</span></button>
- <button class="nav-item" data-page="foods" onclick="switchPage('foods')"><span class="nav-icon"><svg class="wafa-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7c-2-3-6-3-8 0-4 5-1 14 4 14 2 0 3-1 4-1s2 1 4 1c5 0 8-9 4-14-2-3-6-3-8 0Z"/><path d="M12 7c0-3 1-5 4-6"/><path d="M12 7c-2-3-4-3-6-3"/></svg></span><span>الغذاء</span></button>
- <button class="nav-item" data-page="exercise" onclick="switchPage('exercise')"><span class="nav-icon"><svg class="wafa-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m8 21 3-6 3-3 3 3 4 1"/><path d="m5 12 5-4 4 2 4 1"/><path d="m11 15-4-2-4 3"/></svg></span><span>النشاط</span></button>
- <button class="nav-item" data-page="stats" onclick="switchPage('stats')"><span class="nav-icon"><svg class="wafa-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 16v-4M12 16V8M17 16v-6"/></svg></span><span>الإحصائيات</span></button>
- <button class="nav-item" data-page="coach" onclick="switchPage('coach')"><span class="nav-icon"><svg class="wafa-nav-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2Z"/></svg></span><span>المساعد</span></button>
+<button class="nav-item active" data-page="home" onclick="switchPage('home')"><span class="nav-icon"><svg aria-hidden="true" class="wafa-nav-svg" fill="none" height="23" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="23" xmlns="http://www.w3.org/2000/svg"><path d="m3 10 9-7 9 7"></path><path d="M5 9v12h14V9"></path><path d="M9 21v-7h6v7"></path></svg></span><span>الرئيسية</span></button>
+<button class="nav-item" data-page="foods" onclick="switchPage('foods')"><span class="nav-icon"><svg aria-hidden="true" class="wafa-nav-svg" fill="none" height="23" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="23" xmlns="http://www.w3.org/2000/svg"><path d="M12 7c-2-3-6-3-8 0-4 5-1 14 4 14 2 0 3-1 4-1s2 1 4 1c5 0 8-9 4-14-2-3-6-3-8 0Z"></path><path d="M12 7c0-3 1-5 4-6"></path><path d="M12 7c-2-3-4-3-6-3"></path></svg></span><span>الغذاء</span></button>
+<button class="nav-item" data-page="exercise" onclick="switchPage('exercise')"><span class="nav-icon"><svg aria-hidden="true" class="wafa-nav-svg" fill="none" height="23" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="23" xmlns="http://www.w3.org/2000/svg"><circle cx="14" cy="4" r="2"></circle><path d="m8 21 3-6 3-3 3 3 4 1"></path><path d="m5 12 5-4 4 2 4 1"></path><path d="m11 15-4-2-4 3"></path></svg></span><span>النشاط</span></button>
+<button class="nav-item" data-page="stats" onclick="switchPage('stats')"><span class="nav-icon"><svg aria-hidden="true" class="wafa-nav-svg" fill="none" height="23" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="23" xmlns="http://www.w3.org/2000/svg"><rect height="18" rx="3" width="18" x="3" y="3"></rect><path d="M7 16v-4M12 16V8M17 16v-6"></path></svg></span><span>الإحصائيات</span></button>
+<button class="nav-item" data-page="coach" onclick="switchPage('coach')"><span class="nav-icon"><svg aria-hidden="true" class="wafa-nav-svg" fill="none" height="23" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="23" xmlns="http://www.w3.org/2000/svg"><path d="m12 2 2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2Z"></path></svg></span><span>المساعد</span></button>
 </nav>
+</div><div id="onboarding">
+<div class="onboard-inner">
+<div class="onboard-top">
+<div class="onboard-logo">WF</div>
+<div class="onboard-kicker">WAFA FIT EXPERIENCE</div>
+<h1 class="onboard-title" id="onboardTitle">ابدأ رحلتك الصحية 💜</h1>
+<p class="onboard-sub" id="onboardSubtitle">أنشئ ملفك الشخصي وحدد أهدافك اليومية لتخصيص تجربتك.</p>
 </div>
-
-<div id="onboarding">
- <div class="onboard-inner">
-  <div class="onboard-top">
-   <div class="onboard-logo">WF</div>
-   <div class="onboard-kicker">WAFA FIT EXPERIENCE</div>
-   <h1 class="onboard-title" id="onboardTitle">ابدأ رحلتك الصحية 💜</h1>
-   <p class="onboard-sub" id="onboardSubtitle">أنشئ ملفك الشخصي وحدد أهدافك اليومية لتخصيص تجربتك.</p>
-  </div>
-  <div class="onboard-card">
-   <div class="step-line"><div class="step-dot active" id="stepDot1"></div><div class="step-dot" id="stepDot2"></div></div>
-   <div id="onboardStep1">
-    <div class="step-caption">الخطوة 01 — معلوماتك الشخصية</div>
-    <h2 class="onboard-section-title">أهلًا بك! 👋</h2>
-    <p class="onboard-section-sub">أخبرنا ببعض المعلومات الأساسية لإنشاء ملفك.</p>
-    <div class="input-group"><label>👤 الاسم (اختياري)</label><input id="profileName" maxlength="35" placeholder="اكتب اسمك"></div>
-    <div class="form-grid">
-     <div class="input-group"><label>🎂 العمر</label><input id="profileAge" type="number" min="15" max="120" placeholder="15 أو أكثر"></div>
-     <div class="input-group"><label>⚧ الجنس</label><select id="profileSex"><option value="">اختر الجنس</option><option value="male">ذكر</option><option value="female">أنثى</option></select></div>
-     <div class="input-group"><label>📏 الطول (سم)</label><input id="profileHeight" type="number" min="100" max="250" placeholder="170"></div>
-     <div class="input-group"><label>⚖️ الوزن (كجم)</label><input id="profileWeight" type="number" min="20" max="400" step="0.1" placeholder="70"></div>
-    </div>
-    <button class="primary-btn" onclick="nextOnboarding()">متابعة إلى أهدافك ←</button>
-   </div>
-   <div id="onboardStep2" style="display:none">
-    <div class="step-caption">الخطوة 02 — أهدافك اليومية</div>
-    <h2 class="onboard-section-title">خصص أهدافك 🎯</h2>
-    <p class="onboard-section-sub">أدخل الأهداف التي تريد متابعتها يوميًا.</p>
-    <div class="goal-grid">
-     <div class="goal-input full"><label>🔥 السعرات الحرارية (سعرة)</label><input id="profileCalories" type="number" min="1" max="15000" placeholder="مثال: 2000"></div>
-     <div class="goal-input"><label>🍞 الكربوهيدرات (جم)</label><input id="profileCarbs" type="number" min="0" max="1500" placeholder="250"></div>
-     <div class="goal-input"><label>🥩 البروتين (جم)</label><input id="profileProtein" type="number" min="0" max="1500" placeholder="100"></div>
-     <div class="goal-input"><label>🥑 الدهون (جم)</label><input id="profileFat" type="number" min="0" max="1500" placeholder="70"></div>
-     <div class="goal-input"><label>💧 الماء (مل)</label><input id="profileWater" type="number" min="1" max="15000" placeholder="2000"></div>
-    </div>
-    <div class="onboard-note">يمكنك تعديل جميع هذه الأهداف لاحقًا من الإعدادات. الأهداف التي تدخلها هي أهداف متابعة شخصية وليست توصية طبية. لمن هم دون 18 سنة، ينبغي تحديد أهداف التغذية بمساعدة ولي الأمر ومختص صحي، وتجنب الحميات أو تقليل الطعام دون إشراف.</div>
-    <div class="onboard-actions"><button class="secondary-btn" onclick="backOnboarding()">رجوع</button><button class="primary-btn" onclick="saveProfile()">إنشاء ملفي 💜</button></div>
-   </div>
-   <div class="onboard-error" id="onboardError"></div>
-   <button class="secondary-btn" id="cancelProfileButton" onclick="cancelProfileEdit()" style="display:none;margin-top:10px">إلغاء التعديل</button>
-  </div>
-  <div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
- </div>
+<div class="onboard-card">
+<div class="step-line"><div class="step-dot active" id="stepDot1"></div><div class="step-dot" id="stepDot2"></div></div>
+<div id="onboardStep1">
+<div class="step-caption">الخطوة 01 — معلوماتك الشخصية</div>
+<h2 class="onboard-section-title">أهلًا بك! 👋</h2>
+<p class="onboard-section-sub">أخبرنا ببعض المعلومات الأساسية لإنشاء ملفك.</p>
+<div class="input-group"><label>👤 الاسم (اختياري)</label><input id="profileName" maxlength="35" placeholder="اكتب اسمك"/></div>
+<div class="form-grid">
+<div class="input-group"><label>🎂 العمر</label><input id="profileAge" max="120" min="15" placeholder="15 أو أكثر" type="number"/></div>
+<div class="input-group"><label>⚧ الجنس</label><select id="profileSex"><option value="">اختر الجنس</option><option value="male">ذكر</option><option value="female">أنثى</option></select></div>
+<div class="input-group"><label>📏 الطول (سم)</label><input id="profileHeight" max="250" min="100" placeholder="170" type="number"/></div>
+<div class="input-group"><label>⚖️ الوزن (كجم)</label><input id="profileWeight" max="400" min="20" placeholder="70" step="0.1" type="number"/></div>
 </div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const STORAGE_KEY="wafaFitApp_v1";
-
-let data={
- profile:null,date:todayKey(),foods:[],exercises:[],water:0,history:[],
- savedMeals:[],overLimitNotified:false
-};
-let profileEditMode=false;
-let onboardingStep=1;
-
-function todayKey(){
- const d=new Date();
- return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-function dateLabel(key){
- const p=key.split("-");
- return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString("ar-SA",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-}
-function loadData(){
- try{
-  const saved=localStorage.getItem(STORAGE_KEY);
-  if(saved){
-   const x=JSON.parse(saved);
-   data={
-    profile:x.profile||null,date:x.date||todayKey(),
-    foods:Array.isArray(x.foods)?x.foods:[],
-    exercises:Array.isArray(x.exercises)?x.exercises:[],
-    water:Number(x.water)||0,
-    history:Array.isArray(x.history)?x.history:[],
-    savedMeals:Array.isArray(x.savedMeals)?x.savedMeals:[],
-    overLimitNotified:Boolean(x.overLimitNotified)
-   };
-   if(data.profile){
-    const p=data.profile;
-    p.calorieGoal=p.calorieGoal||2000;
-    p.waterGoal=p.waterGoal||2000;
-    p.carbsGoal=p.carbsGoal??250;
-    p.proteinGoal=p.proteinGoal??100;
-    p.fatGoal=p.fatGoal??70;
-   }
-  }
- }catch(e){console.error(e)}
- checkNewDay();
-}
-function persist(){
- try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
- catch(e){showToast("تعذر حفظ البيانات في هذا الجهاز")}
-}
-function showToast(message){
- const el=document.getElementById("toast");
- el.textContent=message;el.style.display="block";
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>el.style.display="none",3000);
-}
-function checkNewDay(){
- const today=todayKey();
- if(data.date!==today){
-  if(data.date){
-   data.history.unshift({
-    date:data.date,calories:getTotalCalories(),water:data.water,
-    burn:getTotalBurn(),foodCount:data.foods.length,
-    exerciseCount:data.exercises.length,
-    carbs:getMacroTotal("carbs"),protein:getMacroTotal("protein"),fat:getMacroTotal("fat")
-   });
-   data.history=data.history.slice(0,365);
-  }
-  data.date=today;data.foods=[];data.exercises=[];data.water=0;
-  data.overLimitNotified=false;
-  persist();
-  if(data.profile)showToast("🌙 بدأ يوم جديد! تم حفظ سجل اليوم السابق.");
- }
-}
-function scheduleMidnight(){
- const now=new Date();
- const next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,1);
- setTimeout(()=>{checkNewDay();updateUI();scheduleMidnight()},Math.max(1000,next-now));
-}
-document.addEventListener("visibilitychange",()=>{if(!document.hidden){checkNewDay();updateUI()}});
-window.addEventListener("pageshow",()=>{checkNewDay();updateUI()});
-
-function showOnboarding(edit=false){
- profileEditMode=edit;
- document.getElementById("onboarding").style.display="block";
- document.getElementById("onboardTitle").textContent=edit?"تعديل ملفك الشخصي":"ابدأ رحلتك الصحية 💜";
- document.getElementById("onboardSubtitle").textContent=edit?"حدّث بياناتك وأهدافك اليومية.":"أنشئ ملفك الشخصي وحدد أهدافك اليومية لتخصيص تجربتك.";
- document.getElementById("cancelProfileButton").style.display=edit?"block":"none";
- document.getElementById("onboardError").style.display="none";
- const p=data.profile;
- const fields={
-  profileName:p?.name||"",profileAge:p?.age||"",profileSex:p?.sex||"",
-  profileHeight:p?.height||"",profileWeight:p?.weight||"",
-  profileCalories:p?.calorieGoal||"",profileCarbs:p?.carbsGoal??"",
-  profileProtein:p?.proteinGoal??"",profileFat:p?.fatGoal??"",
-  profileWater:p?.waterGoal||""
- };
- Object.keys(fields).forEach(id=>document.getElementById(id).value=fields[id]);
- setOnboardingStep(1);
-}
-function setOnboardingStep(step){
- onboardingStep=step;
- document.getElementById("onboardStep1").style.display=step===1?"block":"none";
- document.getElementById("onboardStep2").style.display=step===2?"block":"none";
- document.getElementById("stepDot1").classList.toggle("active",step>=1);
- document.getElementById("stepDot2").classList.toggle("active",step>=2);
- document.getElementById("onboardError").style.display="none";
-}
-function onboardingError(message){
- const el=document.getElementById("onboardError");
- el.textContent=message;el.style.display="block";
-}
-function nextOnboarding(){
- const age=Number(document.getElementById("profileAge").value);
- const sex=document.getElementById("profileSex").value;
- const height=Number(document.getElementById("profileHeight").value);
- const weight=Number(document.getElementById("profileWeight").value);
- if(!Number.isInteger(age)||age<15||age>120){onboardingError("العمر المسموح لاستخدام التطبيق هو 15 سنة فأكثر.");return}
- if(!sex){onboardingError("يرجى اختيار الجنس.");return}
- if(!Number.isFinite(height)||height<100||height>250){onboardingError("تحقق من الطول.");return}
- if(!Number.isFinite(weight)||weight<20||weight>400){onboardingError("تحقق من الوزن.");return}
- setOnboardingStep(2);
-}
-function backOnboarding(){setOnboardingStep(1)}
-function saveProfile(){
- const name=document.getElementById("profileName").value.trim();
- const age=Number(document.getElementById("profileAge").value);
- const sex=document.getElementById("profileSex").value;
- const height=Number(document.getElementById("profileHeight").value);
- const weight=Number(document.getElementById("profileWeight").value);
- const calorieGoal=Number(document.getElementById("profileCalories").value);
- const carbsGoal=Number(document.getElementById("profileCarbs").value);
- const proteinGoal=Number(document.getElementById("profileProtein").value);
- const fatGoal=Number(document.getElementById("profileFat").value);
- const waterGoal=Number(document.getElementById("profileWater").value);
-
- if(!Number.isInteger(age)||age<15||age>120){setOnboardingStep(1);onboardingError("العمر المسموح 15 سنة فأكثر.");return}
- if(!sex){setOnboardingStep(1);onboardingError("اختر الجنس.");return}
- if(!Number.isFinite(height)||height<100||height>250){setOnboardingStep(1);onboardingError("تحقق من الطول.");return}
- if(!Number.isFinite(weight)||weight<20||weight>400){setOnboardingStep(1);onboardingError("تحقق من الوزن.");return}
- if(!Number.isFinite(calorieGoal)||calorieGoal<1||calorieGoal>15000){setOnboardingStep(2);onboardingError("أدخل هدف سعرات صحيحًا.");return}
- if(!Number.isFinite(carbsGoal)||carbsGoal<0||carbsGoal>1500){setOnboardingStep(2);onboardingError("تحقق من هدف الكربوهيدرات.");return}
- if(!Number.isFinite(proteinGoal)||proteinGoal<0||proteinGoal>1500){setOnboardingStep(2);onboardingError("تحقق من هدف البروتين.");return}
- if(!Number.isFinite(fatGoal)||fatGoal<0||fatGoal>1500){setOnboardingStep(2);onboardingError("تحقق من هدف الدهون.");return}
- if(!Number.isFinite(waterGoal)||waterGoal<1||waterGoal>15000){setOnboardingStep(2);onboardingError("أدخل هدف ماء صحيحًا.");return}
-
- data.profile={name,age,sex,height,weight,calorieGoal,carbsGoal,proteinGoal,fatGoal,waterGoal};
- persist();
- document.getElementById("onboarding").style.display="none";
- profileEditMode=false;
- updateUI();
- showToast("تم حفظ ملفك وأهدافك بنجاح 💜");
-}
-function cancelProfileEdit(){
- document.getElementById("onboarding").style.display="none";
- profileEditMode=false;
-}
-function openProfile(){showOnboarding(true)}
-
-function saveGoals(){
- const p=data.profile;
- if(!p)return;
- const calorieGoal=Number(document.getElementById("goalCalories").value);
- const carbsGoal=Number(document.getElementById("goalCarbs").value);
- const proteinGoal=Number(document.getElementById("goalProtein").value);
- const fatGoal=Number(document.getElementById("goalFat").value);
- const waterGoal=Number(document.getElementById("goalWater").value);
- if(!Number.isFinite(calorieGoal)||calorieGoal<1||calorieGoal>15000){showToast("تحقق من هدف السعرات");return}
- if(!Number.isFinite(carbsGoal)||carbsGoal<0||carbsGoal>1500){showToast("تحقق من الكربوهيدرات");return}
- if(!Number.isFinite(proteinGoal)||proteinGoal<0||proteinGoal>1500){showToast("تحقق من البروتين");return}
- if(!Number.isFinite(fatGoal)||fatGoal<0||fatGoal>1500){showToast("تحقق من الدهون");return}
- if(!Number.isFinite(waterGoal)||waterGoal<1||waterGoal>15000){showToast("تحقق من هدف الماء");return}
- Object.assign(p,{calorieGoal,carbsGoal,proteinGoal,fatGoal,waterGoal});
- data.overLimitNotified=false;
- persist();updateUI();showToast("تم تحديث أهدافك اليومية 💜");
-}
-function switchPage(page){
- checkNewDay();
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.getElementById(page).classList.add("active");
- document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
- const btn=document.querySelector('[data-page="'+page+'"]');
- if(btn)btn.classList.add("active");
- document.querySelector(".content").scrollTop=0;
- if(page==="settings"&&data.profile){
-  const p=data.profile;
-  document.getElementById("goalCalories").value=p.calorieGoal;
-  document.getElementById("goalCarbs").value=p.carbsGoal;
-  document.getElementById("goalProtein").value=p.proteinGoal;
-  document.getElementById("goalFat").value=p.fatGoal;
-  document.getElementById("goalWater").value=p.waterGoal;
- }
- updateUI();
-}
-
-function getTotalCalories(){return data.foods.reduce((s,x)=>s+Number(x.calories||0),0)}
-function getTotalBurn(){return data.exercises.reduce((s,x)=>s+Number(x.calories||0),0)}
-function getMacroTotal(key){return data.foods.reduce((s,x)=>s+Number(x[key]||0),0)}
-
-function checkCalorieLimit(calories){
- if(!data.profile)return;
- const goal=Number(data.profile.calorieGoal)||0;
- const alertBox=document.getElementById("limitAlert");
- if(goal>0&&calories>goal){
-  const excess=calories-goal;
-  alertBox.style.display="block";
-  document.getElementById("limitAlertText").textContent=
-   "تجاوز مجموع ما سجلته هدفك بمقدار "+excess.toLocaleString("ar-SA")+" سعرة. هذا تنبيه للمقارنة مع هدفك المدخل فقط، وليس تقييمًا طبيًا لاحتياج جسمك.";
-  if(!data.overLimitNotified){
-   data.overLimitNotified=true;persist();
-   setTimeout(()=>showToast("⚠️ تجاوزت هدف السعرات المسجل بـ "+excess+" سعرة"),200);
-  }
- }else{
-  alertBox.style.display="none";
-  if(goal>0&&calories<=goal)data.overLimitNotified=false;
- }
-}
-
-function foodEmoji(name){
- if(name.includes("تفاح"))return "🍎";
- if(name.includes("موز"))return "🍌";
- if(name.includes("دجاج"))return "🍗";
- if(name.includes("رز")||name.includes("أرز"))return "🍚";
- if(name.includes("خبز"))return "🍞";
- if(name.includes("بيض"))return "🥚";
- if(name.includes("حليب"))return "🥛";
- if(name.includes("سلط"))return "🥗";
- if(name.includes("سمك"))return "🐟";
- if(name.includes("شوفان"))return "🥣";
- return "🍽️";
-}
-function readFoodForm(){
- const name=document.getElementById("foodName").value.trim();
- const calories=Number(document.getElementById("foodCalories").value);
- const carbs=Number(document.getElementById("foodCarbs").value||0);
- const protein=Number(document.getElementById("foodProtein").value||0);
- const fat=Number(document.getElementById("foodFat").value||0);
- const meal=document.getElementById("foodMeal").value;
- if(!name)return {error:"اكتب اسم الوجبة"};
- if(!Number.isFinite(calories)||calories<0)return {error:"أدخل سعرات صحيحة"};
- if(![carbs,protein,fat].every(v=>Number.isFinite(v)&&v>=0&&v<=1500))return {error:"تحقق من قيم الماكروز"};
- return {name,calories,carbs,protein,fat,meal,emoji:foodEmoji(name)};
-}
-function clearFoodForm(){
- ["foodName","foodCalories","foodCarbs","foodProtein","foodFat"].forEach(id=>document.getElementById(id).value="");
- document.getElementById("saveFoodToLibrary").checked=false;
-}
-function addFood(){
- const meal=readFoodForm();
- if(meal.error){showToast(meal.error);return}
- const item={...meal,id:Date.now(),time:new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"})};
- data.foods.unshift(item);
- if(document.getElementById("saveFoodToLibrary").checked)saveMealToLibrary(meal);
- clearFoodForm();
- persist();updateUI();showToast("تم تسجيل الوجبة 🍽️");
-}
-function saveMealToLibrary(meal){
- const exists=data.savedMeals.some(x=>x.name.trim().toLowerCase()===meal.name.trim().toLowerCase()&&
-  Number(x.calories)===Number(meal.calories)&&Number(x.carbs)===Number(meal.carbs)&&
-  Number(x.protein)===Number(meal.protein)&&Number(x.fat)===Number(meal.fat));
- if(exists){showToast("هذه الوجبة موجودة مسبقًا في سجل وجباتك");return}
- data.savedMeals.unshift({
-  id:Date.now()+Math.floor(Math.random()*10000),
-  name:meal.name,calories:meal.calories,carbs:meal.carbs,
-  protein:meal.protein,fat:meal.fat,meal:meal.meal,emoji:meal.emoji,
-  savedAt:new Date().toISOString()
- });
- persist();
-}
-function addSavedMeal(id){
- const saved=data.savedMeals.find(x=>x.id===id);
- if(!saved)return;
- data.foods.unshift({...saved,id:Date.now(),time:new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"})});
- persist();updateUI();showToast("تمت إضافة الوجبة المحفوظة إلى سجل اليوم 💜");
-}
-function updateSavedMealType(id,mealType){
- const allowedMeals=["الفطور","الغداء","العشاء","وجبة خفيفة"];
- if(!allowedMeals.includes(mealType))return;
- const saved=data.savedMeals.find(x=>Number(x.id)===Number(id));
- if(!saved)return;
- saved.meal=mealType;
- persist();
- showToast("تم تحديث نوع الوجبة إلى "+mealType+" 💜");
-}
-function deleteSavedMeal(id){
- if(!confirm("هل تريد حذف هذه الوجبة من سجل وجباتك المحفوظة نهائيًا؟"))return;
- data.savedMeals=data.savedMeals.filter(x=>Number(x.id)!==Number(id));
- persist();
- updateUI();
- showToast("تم حذف الوجبة من سجل المحفوظات");
-}
-function renderSavedMeals(){
- const target=document.getElementById("savedMealsList");
- document.getElementById("savedCount").textContent=data.savedMeals.length+" وجبة";
- if(!data.savedMeals.length){
-  target.innerHTML='<div class="card empty-state"><div>📚</div>لم تحفظ أي وجبات بعد.<br>فعّل خيار الحفظ عند تسجيل وجبة جديدة لتظهر هنا دائمًا.</div>';
-  return;
- }
- target.innerHTML=data.savedMeals.map(x=>`
-  <div class="saved-meal-card">
-   <div class="saved-meal-top"><strong>${x.emoji||"🍽️"} ${escapeHTML(x.name)}</strong><span>${Number(x.calories)} سعرة</span></div>
-   <div class="macro-grid">
-    <div class="macro-box carbs"><span>كربوهيدرات</span><strong>${Number(x.carbs)||0} جم</strong></div>
-    <div class="macro-box protein"><span>بروتين</span><strong>${Number(x.protein)||0} جم</strong></div>
-    <div class="macro-box fat"><span>دهون</span><strong>${Number(x.fat)||0} جم</strong></div>
-    <div class="macro-box cal"><span>السعرات</span><strong>${Number(x.calories)||0}</strong></div>
-   </div>
-   <div class="saved-meal-type">
-    <label for="savedMealType-${Number(x.id)}">نوع الوجبة</label>
-    <select id="savedMealType-${Number(x.id)}" onchange="updateSavedMealType(${Number(x.id)},this.value)">
-     <option value="الفطور" ${x.meal==="الفطور"?"selected":""}>الفطور</option>
-     <option value="الغداء" ${x.meal==="الغداء"?"selected":""}>الغداء</option>
-     <option value="العشاء" ${x.meal==="العشاء"?"selected":""}>العشاء</option>
-     <option value="وجبة خفيفة" ${x.meal==="وجبة خفيفة"?"selected":""}>وجبة خفيفة</option>
-    </select>
-   </div>
-   <div class="saved-meal-actions">
-    <button class="primary-btn" onclick="addSavedMeal(${Number(x.id)})">＋ أضف إلى اليوم</button>
-    <button class="danger-btn" onclick="deleteSavedMeal(${Number(x.id)})">🗑️ حذف من المحفوظات</button>
-   </div>
-  </div>`).join("");
-}
-function deleteFood(id){
- data.foods=data.foods.filter(x=>x.id!==id);
- persist();updateUI();showToast("تم حذف الوجبة من سجل اليوم");
-}
-function addWater(amount){data.water+=amount;persist();updateUI();showToast("تم تسجيل الماء 💧")}
-function removeWater(amount){data.water=Math.max(0,data.water-amount);persist();updateUI();showToast("تم تعديل الماء")}
-
-function getBurnEstimate(){
- const weight=Number(data.profile.weight);
- const met=Number(document.getElementById("exerciseType").value);
- const minutes=Number(document.getElementById("exerciseMinutes").value);
- if(!Number.isFinite(minutes)||minutes<=0||minutes>600)return null;
- const calories=(met*3.5*weight/200)*minutes;
- return {calories:Math.round(calories),minutes,met,weight,intensity:met<4?"خفيفة":met<7?"متوسطة":"عالية"};
-}
-function previewBurn(){
- const result=getBurnEstimate();
- const box=document.getElementById("burnPreview");
- if(!result){showToast("أدخل مدة تمرين صحيحة");return}
- box.style.display="block";
- box.textContent="الحرق التقديري: "+result.calories+" سعرة تقريبًا. شدة النشاط: "+result.intensity+". الحساب تقريبي وليس قياسًا مباشرًا.";
-}
-function addExercise(){
- const result=getBurnEstimate();
- if(!result){showToast("أدخل مدة تمرين صحيحة");return}
- const select=document.getElementById("exerciseType");
- data.exercises.unshift({
-  id:Date.now(),name:select.options[select.selectedIndex].text,
-  minutes:result.minutes,calories:result.calories,intensity:result.intensity,
-  time:new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"})
- });
- document.getElementById("exerciseMinutes").value="";
- document.getElementById("burnPreview").style.display="none";
- persist();updateUI();showToast("تم تسجيل النشاط الرياضي 🏃");
-}
-function deleteExercise(id){
- data.exercises=data.exercises.filter(x=>x.id!==id);
- persist();updateUI();showToast("تم حذف النشاط");
-}
-function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-}
-function renderFoods(targetId,limit=Infinity){
- const target=document.getElementById(targetId);
- const foods=data.foods.slice(0,limit);
- if(!foods.length){
-  target.innerHTML='<div class="empty-state"><div>🍽️</div>لا توجد وجبات مسجلة اليوم</div>';return;
- }
- target.innerHTML=foods.map(food=>`
-  <div class="food-item">
-   <div class="food-emoji">${food.emoji||"🍽️"}</div>
-   <div class="food-details"><strong>${escapeHTML(food.name)}</strong><span>${escapeHTML(food.meal||"وجبة")} · ${escapeHTML(food.time||"")}</span></div>
-   <div class="food-calories">${Number(food.calories)} سعرة</div>
-   ${targetId==="foodList"?`<button class="delete-btn" onclick="deleteFood(${Number(food.id)})">✕</button>`:""}
-  </div>
-  <div class="macro-grid" style="margin-top:-4px;margin-bottom:5px">
-   <div class="macro-box carbs"><span>كربوهيدرات</span><strong>${Number(food.carbs)||0} جم</strong></div>
-   <div class="macro-box protein"><span>بروتين</span><strong>${Number(food.protein)||0} جم</strong></div>
-   <div class="macro-box fat"><span>دهون</span><strong>${Number(food.fat)||0} جم</strong></div>
-   <div class="macro-box cal"><span>السعرات</span><strong>${Number(food.calories)||0}</strong></div>
-  </div>`).join("");
-}
-function renderExercises(){
- const target=document.getElementById("exerciseList");
- if(!data.exercises.length){target.innerHTML='<div class="empty-state"><div>🏃</div>لم تسجل أي نشاط اليوم</div>';return}
- target.innerHTML=data.exercises.map(x=>`
-  <div class="activity-row">
-   <div class="activity-left"><div class="activity-icon">🏃</div><div><strong>${escapeHTML(x.name)}</strong><small>${Number(x.minutes)} دقيقة · ${escapeHTML(x.time||"")} · شدة ${escapeHTML(x.intensity||"")}</small></div></div>
-   <div style="display:flex;align-items:center;gap:8px"><div class="activity-cal">≈ ${Number(x.calories)} سعرة</div><button class="delete-btn" onclick="deleteExercise(${Number(x.id)})">✕</button></div>
-  </div>`).join("");
-}
-function renderMacroProgress(){
- const p=data.profile;
- const items=[
-  {key:"carbs",name:"الكربوهيدرات",icon:"🍞",color:"#ffbb70",goal:p.carbsGoal},
-  {key:"protein",name:"البروتين",icon:"🥩",color:"#55d6a1",goal:p.proteinGoal},
-  {key:"fat",name:"الدهون",icon:"🥑",color:"#72b9ff",goal:p.fatGoal}
- ];
- document.getElementById("macroProgress").innerHTML=items.map(x=>{
-  const total=getMacroTotal(x.key);
-  const pct=x.goal>0?Math.min(total/x.goal*100,100):0;
-  return `<div class="macro-progress-card">
-   <div class="macro-progress-head"><strong>${x.icon} ${x.name}</strong><span>${total} / ${x.goal} جم</span></div>
-   <div class="macro-track"><div class="macro-fill" style="width:${pct}%;background:${x.color}"></div></div>
-  </div>`;
- }).join("");
-}
-function renderChart(){
- const meals=["الفطور","الغداء","العشاء","وجبة خفيفة"];
- const totals=meals.map(m=>data.foods.filter(f=>f.meal===m).reduce((s,f)=>s+Number(f.calories||0),0));
- const max=Math.max(...totals,100);
- document.getElementById("mealChart").innerHTML=meals.map((m,i)=>`
-  <div class="bar-column"><div class="bar-value">${totals[i]}</div><div class="bar" style="height:${Math.max(4,totals[i]/max*100)}%"></div><div class="bar-label">${m}</div></div>`).join("");
-}
-function renderHistory(){
- const target=document.getElementById("historyList");
- if(!data.history.length){target.innerHTML='<div class="card empty-state"><div>📅</div>ستظهر هنا الأيام السابقة بعد أول يوم مكتمل.</div>';return}
- target.innerHTML=data.history.map(day=>`
-  <div class="history-item">
-   <strong>📅 ${dateLabel(day.date)}</strong><br>
-   🍽️ السعرات: ${Number(day.calories||0)}<br>
-   🍞 الكربوهيدرات: ${Number(day.carbs||0)} جم<br>
-   🥩 البروتين: ${Number(day.protein||0)} جم<br>
-   🥑 الدهون: ${Number(day.fat||0)} جم<br>
-   💧 الماء: ${Number(day.water||0)} مل<br>
-   🏃 الأنشطة: ${Number(day.exerciseCount||0)}<br>
-   🔥 حرق النشاط التقديري: ${Number(day.burn||0)} سعرة
-  </div>`).join("");
-}
-function updateUI(){
- if(!data.profile)return;
- const p=data.profile;
- const calories=getTotalCalories(),burn=getTotalBurn();
- const carbs=getMacroTotal("carbs"),protein=getMacroTotal("protein"),fat=getMacroTotal("fat");
-
- document.getElementById("welcomeName").textContent="أهلًا "+(p.name||"بك")+" 💜";
- document.getElementById("homeCalories").textContent=calories.toLocaleString("ar-SA");
- document.getElementById("calorieTargetText").textContent="هدفك اليومي "+p.calorieGoal.toLocaleString("ar-SA")+" سعرة";
- const pct=calories/p.calorieGoal*100;
- document.getElementById("calorieProgress").style.width=Math.min(pct,100)+"%";
- document.getElementById("calorieRemaining").textContent=calories>p.calorieGoal?"تجاوزت الهدف بـ "+(calories-p.calorieGoal):"المتبقي: "+(p.calorieGoal-calories);
- document.getElementById("caloriePercent").textContent=Math.round(pct)+"%";
- document.getElementById("dailyDate").textContent=new Date().toLocaleDateString("ar-SA",{weekday:"long",day:"numeric",month:"long"});
- document.getElementById("homeCarbs").textContent=carbs;
- document.getElementById("homeProtein").textContent=protein;
- document.getElementById("homeFat").textContent=fat;
- document.getElementById("homeWater").textContent=data.water.toLocaleString("ar-SA");
- document.getElementById("waterProgressText").textContent=data.water.toLocaleString("ar-SA");
- document.getElementById("waterGoalText").textContent="هدفك "+p.waterGoal+" مل";
- document.getElementById("waterProgress").style.width=Math.min(data.water/p.waterGoal*100,100)+"%";
- document.getElementById("homeExercise").textContent=burn;
- document.getElementById("homeExerciseCount").textContent=data.exercises.length;
- document.getElementById("foodTotalLabel").textContent=data.foods.length+" وجبة";
- checkCalorieLimit(calories);
-
- const profileHTML=`
-  <div class="activity-row"><span>العمر</span><strong>${p.age} سنة</strong></div>
-  <div class="activity-row"><span>الجنس</span><strong>${p.sex==="male"?"ذكر":"أنثى"}</strong></div>
-  <div class="activity-row"><span>الطول</span><strong>${p.height} سم</strong></div>
-  <div class="activity-row"><span>الوزن</span><strong>${p.weight} كجم</strong></div>`;
- document.getElementById("settingsProfile").innerHTML=profileHTML;
-
- document.getElementById("exerciseProfile").textContent=
-  "يعتمد تقدير الحرق على وزن "+p.weight+" كجم ونوع النشاط ومدته. النتائج تقريبية وليست قياسًا طبيًا.";
-
- document.getElementById("statsFoods").textContent=data.foods.length;
- document.getElementById("statsWater").textContent=data.water;
- document.getElementById("statsExercises").textContent=data.exercises.length;
- document.getElementById("statsBurn").textContent=burn;
- document.getElementById("statsMacros").innerHTML=`
-  <div class="activity-row"><span>🍞 الكربوهيدرات</span><strong>${carbs} / ${p.carbsGoal} جم</strong></div>
-  <div class="activity-row"><span>🥩 البروتين</span><strong>${protein} / ${p.proteinGoal} جم</strong></div>
-  <div class="activity-row"><span>🥑 الدهون</span><strong>${fat} / ${p.fatGoal} جم</strong></div>
-  <div class="activity-row"><span>🔥 السعرات</span><strong>${calories} / ${p.calorieGoal}</strong></div>`;
- renderFoods("homeFoodList",3);
- renderFoods("foodList");
- renderSavedMeals();
- renderExercises();
- renderMacroProgress();
- renderChart();
- renderHistory();
-}
-
-function askCoach(){
- const q=document.getElementById("coachQuestion").value.trim();
- if(!q){showToast("اكتب سؤالك أولًا");return}
- const t=q.toLowerCase();
- let answer="حافظ على التنوع الغذائي والنوم الجيد والحركة المناسبة. هذه معلومات عامة وليست تشخيصًا طبيًا. 💜";
- if(t.includes("ماء"))answer="الماء يساعد على ترطيب الجسم. وزّع شرب الماء خلال اليوم، ولا تعتبر الهدف الرقمي بديلًا عن احتياج جسمك الفعلي.";
- else if(t.includes("وجبة")||t.includes("غذاء")||t.includes("أكل"))answer="الوجبة المتوازنة قد تضم خضارًا أو فواكه، ومصدر بروتين، ونشويات مناسبة. لا تعتمد على الحرمان أو حذف مجموعات غذائية.";
- else if(t.includes("رياضة")||t.includes("حركة")||t.includes("مشي"))answer="ابدأ بنشاط يناسب قدرتك، وزد المدة تدريجيًا. توقف عند الألم أو الدوخة أو ضيق النفس غير المعتاد.";
- else if(t.includes("نوم"))answer="النوم المنتظم يدعم التركيز والطاقة والصحة. حاول الحفاظ على موعد نوم واستيقاظ منتظم.";
- else if(t.includes("وزن")||t.includes("تنحيف")||t.includes("سعرات"))answer="تتغير احتياجات الطاقة حسب العمر والنمو والنشاط والصحة. خصوصًا لمن هم دون 18 سنة، تجنب خفض السعرات دون إشراف مختص.";
- else if(t.includes("بروتين"))answer="البروتين عنصر مهم لبناء وإصلاح أنسجة الجسم. يتوفر في البيض واللحوم والأسماك والحليب والبقوليات. تختلف الاحتياجات حسب العمر والنشاط والحالة الصحية.";
- else if(t.includes("كارب")||t.includes("كربوهيدرات"))answer="الكربوهيدرات مصدر مهم للطاقة، وتوجد في الأرز والخبز والشوفان والفواكه. اختر مصادر متنوعة ولا تحذفها من غذائك دون سبب طبي.";
- else if(t.includes("دهون"))answer="الدهون عنصر غذائي مهم، وتوجد في زيت الزيتون والمكسرات والأفوكادو والأسماك. الجسم يحتاج إلى الدهون ضمن غذاء متوازن.";
- const box=document.getElementById("coachResponse");
- box.style.display="block";box.textContent=answer;
-}
-function quickQuestion(q){document.getElementById("coachQuestion").value=q;askCoach()}
-
-function exportData(){
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download="Wafa-Fit-Data.json";a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
- showToast("تم تجهيز ملف البيانات");
-}
-function resetAll(){
- if(!confirm("سيتم حذف بيانات اليوم والسجل السابق فقط. الوجبات المحفوظة وملفك الشخصي سيبقيان. هل تريد المتابعة؟"))return;
- data.foods=[];data.exercises=[];data.water=0;data.history=[];
- data.date=todayKey();data.overLimitNotified=false;
- persist();updateUI();showToast("تم حذف سجلات الأيام، والوجبات المحفوظة ما زالت موجودة");
-}
-
-loadData();
-if(!data.profile){showOnboarding(false)}
-else{document.getElementById("onboarding").style.display="none";updateUI()}
-scheduleMidnight();
-
-// تسجيل Service Worker لتوفير ملفات التطبيق بعد أول زيارة (يتطلب HTTPS).
-if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js').catch(function(err){ console.warn('SW registration failed:', err); });
-  });
-}
-</script>
-
-</body>
-</html>
+<button class="primary-btn" onclick="nextOnboarding()">متابعة إلى أهدافك ←</button>
+</div>
+<div id="onboardStep2" style="display:none">
+<div class="step-caption">الخطوة 02 — أهدافك اليومية</div>
+<h2 class="onboard-section-title">خصص أهدافك 🎯</h2>
+<p class="onboard-section-sub">أدخل الأهداف التي تريد متابعتها يوميًا.</p>
+<div class="goal-grid">
+<div class="goal-input full"><label>🔥 السعرات الحرارية (سعرة)</label><input id="profileCalories" max="15000" min="1" placeholder="مثال: 2000" type="number"/></div>
+<div class="goal-input"><label>🍞 الكربوهيدرات (جم)</label><input id="profileCarbs" max="1500" min="0" placeholder="250" type="number"/></div>
+<div class="goal-input"><label>🥩 البروتين (جم)</label><input id="profileProtein" max="1500" min="0" placeholder="100" type="number"/></div>
+<div class="goal-input"><label>🥑 الدهون (جم)</label><input id="profileFat" max="1500" min="0" placeholder="70" type="number"/></div>
+<div class="goal-input"><label>💧 الماء (مل)</label><input id="profileWater" max="15000" min="1" placeholder="2000" type="number"/></div>
+</div>
+<div class="onboard-note">يمكنك تعديل جميع هذه الأهداف لاحقًا من الإعدادات. الأهداف التي تدخلها هي أهداف متابعة شخصية وليست توصية طبية. لمن هم دون 18 سنة، ينبغي تحديد أهداف التغذية بمساعدة ولي الأمر ومختص صحي، وتجنب الحميات أو تقليل الطعام دون إشراف.</div>
+<div class="onboard-actions"><button class="secondary-btn" onclick="backOnboarding()">رجوع</button><button class="primary-btn" onclick="saveProfile()">إنشاء ملفي 💜</button></div>
+</div>
+<div class="onboard-error" id="onboardError"></div>
+<button class="secondary-btn" id="cancelProfileButton" onclick="cancelProfileEdit()" style="display:none;margin-top:10px">إلغاء التعديل</button>
+</div>
+<div class="creator">Wafa Fit · ابتكار سلطان الزهراني</div>
+</div>
+</div><div class="toast" id="toast"></div><script src="app.js"></script></body></html>
